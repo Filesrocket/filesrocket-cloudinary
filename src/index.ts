@@ -1,1 +1,2 @@
-console.log("Hello world!");
+export { CloudinaryRocketService } from "./service";
+export * from "./declarations";

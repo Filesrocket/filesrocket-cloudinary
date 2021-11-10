@@ -23,7 +23,6 @@
   "license": "MIT",
   "dependencies": {
     "cloudinary": "^1.27.1",
-    "filesrocket": "^0.1.2",
     "http-errors": "^1.8.0"
   },
   "devDependencies": {
