@@ -1,8 +1,14 @@
-import { Paginated, Payload, Query, Result, ServiceMethods } from "filesrocket";
+import {
+  ServiceMethods,
+  Paginated,
+  Payload,
+  Result,
+  Query
+} from "filesrocket";
 import { NotFound, BadRequest } from "http-errors";
-import cloudinary from "cloudinary";
+import cloudinary, { UploadApiResponse } from "cloudinary";
 
-import { convertToExpression, removeProperties } from "./utils";
+import { convertToExpression, ParseFilename, removeProperties } from "./utils";
 import { CloudinaryOptions, CloudinaryResult } from "./index";
 import { BaseCloudinaryRocket } from "./base";
 
@@ -13,16 +19,26 @@ export class CloudinaryRocketService extends BaseCloudinaryRocket
     cloudinary.v2.config(options);
   }
 
+  @ParseFilename()
   async create(data: Payload, query: Query): Promise<Result> {
     return new Promise((resolve, reject) => {
-      query = removeProperties(query, ["service"]);
+      const updatedQuery: Partial<Query> = removeProperties(query, [
+        "service",
+        "path"
+      ]);
 
-      const uploader = cloudinary.v2.uploader.upload_stream(
-        { resource_type: "auto", ...query },
-        (err, result) => {
-          (!result || err) ? reject(err) : resolve(this.builder(result));
-        }
-      );
+      const callback = (err: any, result: UploadApiResponse | undefined) => {
+        !result || err ? reject(err) : resolve(this.builder(result));
+      };
+
+      const props = {
+        resource_type: "auto",
+        ...updatedQuery,
+        folder: query.path,
+        public_id: data.filename
+      };
+
+      const uploader = cloudinary.v2.uploader.upload_stream(props, callback);
 
       data.file.pipe(uploader);
     });
@@ -35,11 +51,16 @@ export class CloudinaryRocketService extends BaseCloudinaryRocket
         ? query.size
         : pagination.default;
   
-      const updatedQuery = removeProperties(
-        Object.assign({}, query),
-        ["service", "page", "size"]
+      const updatedQuery: Partial<Query> = removeProperties(query, [
+        "service",
+        "page",
+        "size",
+        "path"
+      ]);
+      const exp: string = convertToExpression(
+        { ...updatedQuery, folder: query.path },
+        " AND "
       );
-      const exp: string = convertToExpression(updatedQuery, " AND ");
   
       cloudinary.v2.search
         .expression(exp)
@@ -53,38 +74,42 @@ export class CloudinaryRocketService extends BaseCloudinaryRocket
 
   async get(id: string, query: Query): Promise<Result & Query> {
     return new Promise((resolve, reject) => {
-      const updatedQuery = removeProperties(
+      const updatedQuery: Partial<Query> = removeProperties(
         { ...query, public_id: id } as Query,
         ["service", "path"]
       );
-      const exp: string = convertToExpression(updatedQuery, " AND ");
+      const exp: string = convertToExpression(
+        { ...updatedQuery, folder: query.path },
+        " AND "
+      );
 
       cloudinary.v2.search
         .expression(exp)
         .execute()
         .then(({ resources }: CloudinaryResult) => {
-          if (!resources.length) {
-            return reject(new NotFound("The file does not exist."));
-          }
-          resolve(this.builder(resources[0]));
+          !resolve.length
+            ? reject(new NotFound("The file does not exist."))
+            : resolve(this.builder(resources[0]));
         })
-        .catch(err => {
-          reject(new BadRequest(err?.error.message));
-        });
+        .catch(err => reject(new BadRequest(err?.error.message)));
     });
   }
 
-  async remove(id: string, query: Query): Promise<Result> {
-    const file = await this.get(id, query);
+  async remove(path: string, query: Query): Promise<Result> {
+    const file = await this.get(path, query);
     const { resource_type } = file;
 
-    const updatedQuery = removeProperties(query, ["service", "path"]);
-    const params = { resource_type, ...updatedQuery };
+    const updatedQuery: Partial<Query> = removeProperties(query, [
+      "service",
+      "path"
+    ]);
+    const params = { resource_type, ...updatedQuery, folder: query.path };
 
     return new Promise(async (resolve, reject) => {
-      cloudinary.v2.api.delete_resources([id], params)
+      cloudinary.v2.api
+        .delete_resources([path], params)
         .then(() => resolve(file))
-        .catch(err => reject(new BadRequest(err?.error.message)));
+        .catch((err) => reject(new BadRequest(err?.error.message)));
     });
   }
 }

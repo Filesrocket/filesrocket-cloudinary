@@ -23,9 +23,9 @@ export class BaseCloudinaryRocket {
   protected builder(payload: UploadApiResponse): Result & Query {
     return {
       ...payload,
-      name: payload.filename,
+      name: payload.filename || payload.public_id,
       size: payload.bytes,
-      dir: payload.folder,
+      dir: payload.folder || "",
       ext: `.${ payload.format }`,
       url: payload.secure_url,
       createdAt: new Date(payload.created_at),
