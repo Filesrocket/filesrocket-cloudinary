@@ -1,26 +1,26 @@
-import { Paginated, Query, Result } from "filesrocket";
+import { Paginated, ResultEntity } from "filesrocket";
 import { UploadApiResponse } from "cloudinary";
 
-import { CloudinaryOptions, CloudinaryResult } from "./index";
+import { CloudinaryOptions, CloudinaryResult } from "../index";
 
-export class BaseCloudinaryRocket {
+export class FileBaseService {
   constructor(protected readonly options: CloudinaryOptions) {}
 
-  protected paginate(data: CloudinaryResult): Paginated<Result> {
-    const items: Result[] = data.resources.map(this.builder);
+  protected paginate(data: CloudinaryResult): Paginated<ResultEntity> {
+    const items: ResultEntity[] = data.resources.map(this.builder);
     const { pagination } = this.options;
     
     return {
       items,
       size: data.resources.length || pagination.default,
       total: data.total_count,
-      pageToken: null,
-      nextPageToken: data.next_cursor || null,
-      prevPageToken: null
+      page: undefined,
+      nextPageToken: data.next_cursor,
+      prevPageToken: undefined
     }
   }
     
-  protected builder(payload: UploadApiResponse): Result & Query {
+  protected builder(payload: UploadApiResponse): ResultEntity {
     return {
       ...payload,
       name: payload.filename || payload.public_id,
