@@ -1,12 +1,12 @@
 import { Paginated, ResultEntity } from "filesrocket";
 import { UploadApiResponse } from "cloudinary";
 
-import { CloudinaryOptions, CloudinaryResult } from "../index";
+import { CloudinaryOptions, FileResults } from "../index";
 
 export class FileBaseService {
   constructor(protected readonly options: CloudinaryOptions) {}
 
-  protected paginate(data: CloudinaryResult): Paginated<ResultEntity> {
+  protected paginate(data: FileResults): Paginated<ResultEntity> {
     const items: ResultEntity[] = data.resources.map(this.builder);
     const { pagination } = this.options;
     

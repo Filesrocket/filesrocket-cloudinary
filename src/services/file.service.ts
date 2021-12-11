@@ -2,10 +2,10 @@ import { ServiceMethods, Paginated, Query, FileEntity, ResultEntity } from "file
 import { GenerateFilename, Service } from "filesrocket/lib/common";
 import cloudinary, { UploadApiResponse } from "cloudinary";
 import { omitProps } from "filesrocket/lib/utils";
-import { NotFound } from "http-errors";
+import { NotFound } from "filesrocket/lib/errors";
 
 import { convertToExpression, CustomFilename } from "../utils";
-import { CloudinaryOptions, CloudinaryResult } from "../index";
+import { CloudinaryOptions, FileResults } from "../index";
 import { FileBaseService } from "./file-base.service";
 
 @Service({
@@ -62,7 +62,7 @@ export class FileService extends FileBaseService implements Partial<ServiceMetho
     return this.paginate(data);
   }
 
-  async get(id: string, query: Query): Promise<ResultEntity> {
+  async get(id: string, query: Query = {}): Promise<ResultEntity> {
     const partialQuery = omitProps(query, ["path"]);
     const exp: string = convertToExpression({
       ...partialQuery,
@@ -70,7 +70,7 @@ export class FileService extends FileBaseService implements Partial<ServiceMetho
       public_id: id
     }, " AND ");
 
-    const data: CloudinaryResult = await cloudinary.v2.search
+    const data: FileResults = await cloudinary.v2.search
       .expression(exp)
       .execute();
 

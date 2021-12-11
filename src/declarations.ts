@@ -5,8 +5,14 @@ export interface CloudinaryOptions extends ConfigOptions {
   pagination: Pagination;
 }
 
-export interface CloudinaryResult extends Query {
+export interface FileResults extends Query {
   total_count: number;
   next_cursor: string;
   resources: UploadApiResponse[];
+}
+
+export interface FolderResults extends Query {
+  folders: { name: string; path: string }[];
+  next_cursor: string;
+  total_count: number;
 }
