@@ -1,4 +1,4 @@
-import { Pagination, Query } from "filesrocket";
+import { Pagination, Query, ResultEntity } from "filesrocket";
 import { ConfigOptions, UploadApiResponse } from "cloudinary";
 
 export interface CloudinaryOptions extends ConfigOptions {
@@ -16,3 +16,11 @@ export interface FolderResults extends Query {
   next_cursor: string;
   total_count: number;
 }
+
+export interface CloudinaryResults<T> extends Query {
+  resources: T[];
+  total_count: number;
+  next_cursor: string;
+}
+
+export type FunctionBuilder<T> = (data: T) => Partial<ResultEntity>;

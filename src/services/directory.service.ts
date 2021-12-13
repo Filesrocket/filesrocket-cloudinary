@@ -4,37 +4,16 @@ import { Service } from "filesrocket/lib/common";
 import cloudinary from "cloudinary";
 
 import { CloudinaryOptions, FolderResults } from "../declarations";
+import { BaseService } from "../base";
 
 @Service({
   name: "cloudinary",
   type: "Directories"
 })
-export class DirectoryService implements ServiceMethods<DirectoryEntity> {
+export class DirectoryService extends BaseService implements ServiceMethods<DirectoryEntity> {
   constructor(private readonly options: CloudinaryOptions) {
+    super();
     cloudinary.v2.config(options);
-  }
-
-  private builder(entity: any): ResultEntity {
-    return {
-      ...entity,
-      name: entity.name,
-      dir: entity.path,
-      createdAt: entity.rate_limit_reset_at
-    };
-  }
-
-  pagination(data: FolderResults): Paginated<ResultEntity> {
-    const { folders, next_cursor, total_count } = data;
-    const items = folders.map(this.builder);
-
-    return {
-      items,
-      size: items.length,
-      total: total_count,
-      page: undefined,
-      nextPageToken: next_cursor,
-      prevPageToken: undefined
-    };
   }
 
   async create(data: DirectoryEntity, __?: Query): Promise<ResultEntity> {
@@ -61,7 +40,11 @@ export class DirectoryService implements ServiceMethods<DirectoryEntity> {
         if (err || !result) return reject(
           createHttpError(err?.http_code, err?.message)
         );
-        resolve(this.pagination(result));
+        
+        resolve(this.pagination({
+          ...result,
+          resources: result.folders
+        }, this.builder) as any);
       }
 
       const options = { max_results, next_cursor: query.page };
@@ -75,14 +58,29 @@ export class DirectoryService implements ServiceMethods<DirectoryEntity> {
     });
   }
 
-  // Remove recursive directories.
-  async remove(id: string, query: Query = {}): Promise<ResultEntity> {
-    console.log(id);
+  async remove(id: string): Promise<Partial<ResultEntity>> {
+    return new Promise((resolve, reject) => {
+      const callback = (err: any, result: any) => {
+        if (err || !result) return reject(
+          createHttpError(err?.http_code, err?.message)
+        );
+  
+        const chunks: string[] = id.split("/");
+        const name = chunks[chunks.length - 1];
+  
+        resolve({ ...result, name, dir: id });
+      }
 
-    if (query.bulk) {
-      cloudinary.v2.search.expression(`folder=${ id }`).execute();
-    }
+      cloudinary.v2.api.delete_folder(id, {}, callback);
+    });
+  }
 
-    return {} as any;
+  private builder(entity: any): ResultEntity {
+    return {
+      ...entity,
+      name: entity.name,
+      dir: entity.path,
+      createdAt: entity.rate_limit_reset_at
+    };
   }
 }

@@ -6,15 +6,15 @@ import { NotFound } from "filesrocket/lib/errors";
 
 import { convertToExpression, CustomFilename } from "../utils";
 import { CloudinaryOptions, FileResults } from "../index";
-import { FileBaseService } from "./file-base.service";
+import { BaseService } from "../base";
 
 @Service({
   name: "cloudinary",
   type: "Files"
 })
-export class FileService extends FileBaseService implements Partial<ServiceMethods> {
-  constructor(options: CloudinaryOptions) {
-    super(options);
+export class FileService extends BaseService implements Partial<ServiceMethods> {
+  constructor(private readonly options: CloudinaryOptions) {
+    super();
     cloudinary.v2.config(options);
   }
 
@@ -59,7 +59,7 @@ export class FileService extends FileBaseService implements Partial<ServiceMetho
       .next_cursor(query.page)
       .execute();
 
-    return this.paginate(data);
+    return this.pagination(data, this.builder) as any;
   }
 
   async get(id: string, query: Query = {}): Promise<ResultEntity> {
@@ -93,5 +93,18 @@ export class FileService extends FileBaseService implements Partial<ServiceMetho
 
     await cloudinary.v2.api.delete_resources([path], params);
     return file;
+  }
+
+  private builder(payload: UploadApiResponse): ResultEntity {
+    return {
+      ...payload,
+      name: payload.filename || payload.public_id,
+      size: payload.bytes,
+      dir: payload.folder || "",
+      ext: `.${ payload.format }`,
+      url: payload.secure_url,
+      createdAt: new Date(payload.created_at),
+      updatedAt: new Date(payload.updatedAt)
+    }
   }
 }
