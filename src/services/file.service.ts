@@ -21,7 +21,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
   @GenerateFilename({
     strategy: CustomFilename
   })
-  async create(data: FileEntity, query: Query): Promise<ResultEntity> {
+  async create(data: FileEntity, query: Query = {}): Promise<ResultEntity> {
     return new Promise((resolve, reject) => {
       const callback = (err: any, result: UploadApiResponse | undefined) => {
         !result || err ? reject(err) : resolve(this.builder(result));
@@ -41,7 +41,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     });
   }
 
-  async list(query: Query): Promise<Paginated<ResultEntity>> {
+  async list(query: Query = {}): Promise<Paginated<ResultEntity>> {
     const { pagination } = this.options;
     const paginate: number = query.size <= pagination.max
       ? query.size
@@ -81,7 +81,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     return this.builder(data.resources[0]);
   }
 
-  async remove(path: string, query: Query): Promise<ResultEntity> {
+  async remove(path: string, query: Query = {}): Promise<ResultEntity> {
     const file = await this.get(path, {});
     
     const partialQuery = omitProps(query, ["path"]);

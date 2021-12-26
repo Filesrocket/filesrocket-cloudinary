@@ -6,7 +6,9 @@
   "types": "lib",
   "scripts": {
     "serve": "nodemon",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "jest",
+    "test:w": "npm run test -- --watch"
   },
   "keywords": [
     "cloudinary",
@@ -25,7 +27,10 @@
     "cloudinary": "^1.27.1"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "dotenv": "^10.0.0",
     "nodemon": "^2.0.14",
+    "ts-jest": "^27.1.2",
     "ts-node": "^10.3.0",
     "typescript": "^4.4.4"
   }
