@@ -1,4 +1,4 @@
-import { DirectoryEntity, ResultEntity, Paginated, Query, ServiceMethods } from "filesrocket/lib";
+import { DirectoryEntity, ResultEntity, Paginated, Query, ServiceMethods } from "filesrocket";
 import { createHttpError } from "filesrocket/lib/errors";
 import { Service } from "filesrocket/lib/common";
 import cloudinary from "cloudinary";

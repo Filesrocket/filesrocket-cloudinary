@@ -1,8 +1,8 @@
 import { CloudinaryResults, FunctionBuilder } from "./declarations";
-import { Paginated, ResultEntity } from "filesrocket/lib";
+import { Paginated, ResultEntity } from "filesrocket";
 
 export class BaseService {
-  pagination<T>(
+  protected pagination<T>(
     data: CloudinaryResults<T>,
     func: FunctionBuilder<T>
   ): Paginated<Partial<ResultEntity>> {

@@ -2,10 +2,7 @@ import { Query, ResultEntity } from "filesrocket";
 import { createReadStream } from "fs";
 import { parse } from "path";
 
-import { CloudinaryFileService } from "../../src";
-import { environments } from "../config/environments";
-
-const service = new CloudinaryFileService(environments.cloudinary);
+import { fileService } from "../config/service";
 
 const FOLDER_NAME: string = "filesrocket-test";
 
@@ -17,7 +14,7 @@ export async function uploadFile(
   const { base: name } = parse(path);
   const options = { path: folder };
 
-  return service.create({
+  return fileService.create({
     name,
     stream,
     fieldname: "files",
@@ -35,16 +32,16 @@ export async function uploadManyFiles(
 }
 
 export async function getFiles(query: Query = {}) {
-  return service.list({
+  return fileService.list({
     path: FOLDER_NAME,
     ...query
   });
 }
 
 export async function deleteOneFile(path: string) {
-  return service.remove(path);
+  return fileService.remove(path);
 }
 
 export async function deleteManyFiles(paths: string[]) {
-  return Promise.all(paths.map(path => service.remove(path)));
+  return Promise.all(paths.map(path => fileService.remove(path)));
 }
