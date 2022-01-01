@@ -11,6 +11,8 @@ const FOLDER_NAMES: string[] = [
   "audios"
 ];
 
+beforeAll(() => jest.setTimeout((60 * 10) * 1000));
+
 describe("Creating directories", () => {
   test("Create many directories", async () => {
     const items: ResultEntity[] = await Promise.all(

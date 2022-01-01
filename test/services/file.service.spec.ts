@@ -18,9 +18,7 @@ const FILENAMES: string[] = [
   "five.png"
 ];
 
-beforeAll(() => {
-  jest.setTimeout((60 * 10) * 1000);
-});
+beforeAll(() => jest.setTimeout((60 * 10) * 1000));
 
 describe("Uploading files", () => {
   test("Upload many files", async () => {
@@ -56,14 +54,14 @@ describe("Deleting files", () => {
     const data: Paginated<ResultEntity> = await getFiles({ size: 1 });
     const file: ResultEntity = data.items[0];
 
-    const entity: ResultEntity = await deleteOneFile(file.public_id);
+    const entity: ResultEntity = await deleteOneFile(file.id);
     expect(entity.name).toBe(file.name);
   });
 
   test("Delete many files", async () => {
     const data: Paginated<ResultEntity> = await getFiles();
     
-    const paths: string[] = data.items.map(item => item.public_id);
+    const paths: string[] = data.items.map(item => item.id);
     const results: ResultEntity[] = await deleteManyFiles(paths);
     
     expect(results).toHaveLength(data.items.length);

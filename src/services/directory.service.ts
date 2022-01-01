@@ -68,7 +68,7 @@ export class DirectoryService extends BaseService implements ServiceMethods<Dire
         const chunks: string[] = id.split("/");
         const name = chunks[chunks.length - 1];
   
-        resolve({ ...result, name, dir: id });
+        resolve({ ...result, id, name, dir: id });
       }
 
       cloudinary.v2.api.delete_folder(id, {}, callback);
