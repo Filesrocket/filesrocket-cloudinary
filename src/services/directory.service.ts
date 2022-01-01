@@ -34,7 +34,7 @@ export class DirectoryService extends BaseService implements ServiceMethods<Dire
       const { pagination } = this.options;
       const max_results: number = query.size <= pagination.max
         ? query.size
-        : pagination.min;
+        : pagination.default;
 
       const callback = (err: any, result: FolderResults) => {
         if (err || !result) return reject(

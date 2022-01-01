@@ -45,7 +45,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     const { pagination } = this.options;
     const paginate: number = query.size <= pagination.max
       ? query.size
-      : pagination.min;
+      : pagination.default;
 
     const partialQuery = omitProps(query, ["size", "page", "path"]);
     const exp: string = convertToExpression(
