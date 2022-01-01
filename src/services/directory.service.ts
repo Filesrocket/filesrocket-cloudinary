@@ -34,7 +34,7 @@ export class DirectoryService extends BaseService implements ServiceMethods<Dire
       const { pagination } = this.options;
       const max_results: number = query.size <= pagination.max
         ? query.size
-        : pagination.default;
+        : pagination.min;
 
       const callback = (err: any, result: FolderResults) => {
         if (err || !result) return reject(
@@ -78,6 +78,7 @@ export class DirectoryService extends BaseService implements ServiceMethods<Dire
   private builder(entity: any): ResultEntity {
     return {
       ...entity,
+      id: entity.path,
       name: entity.name,
       dir: entity.path,
       createdAt: entity.rate_limit_reset_at

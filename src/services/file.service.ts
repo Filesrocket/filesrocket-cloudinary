@@ -45,7 +45,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     const { pagination } = this.options;
     const paginate: number = query.size <= pagination.max
       ? query.size
-      : pagination.default;
+      : pagination.min;
 
     const partialQuery = omitProps(query, ["size", "page", "path"]);
     const exp: string = convertToExpression(
@@ -98,6 +98,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
   private builder(payload: UploadApiResponse): ResultEntity {
     return {
       ...payload,
+      id: payload.public_id,
       name: payload.filename || payload.public_id,
       size: payload.bytes,
       dir: payload.folder || "",
