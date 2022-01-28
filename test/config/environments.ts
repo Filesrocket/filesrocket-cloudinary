@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const environments = {
   cloudinary: {
@@ -8,5 +8,5 @@ export const environments = {
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET
   },
-  foldername: "filesrocket-test"
-};
+  foldername: 'filesrocket-test'
+}
