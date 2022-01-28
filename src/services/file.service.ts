@@ -1,5 +1,5 @@
 import { ServiceMethods, Paginated, Query, FileEntity, ResultEntity } from "filesrocket";
-import { GenerateFilename, Service } from "filesrocket/lib/common";
+import { Filename, Service } from "filesrocket/lib/common";
 import cloudinary, { UploadApiResponse } from "cloudinary";
 import { omitProps } from "filesrocket/lib/utils";
 import { NotFound } from "filesrocket/lib/errors";
@@ -18,9 +18,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     cloudinary.v2.config(options);
   }
 
-  @GenerateFilename({
-    strategy: CustomFilename
-  })
+  @Filename({ strategy: CustomFilename })
   async create(data: FileEntity, query: Query = {}): Promise<ResultEntity> {
     return new Promise((resolve, reject) => {
       const callback = (err: any, result: UploadApiResponse | undefined) => {
