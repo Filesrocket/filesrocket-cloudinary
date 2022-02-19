@@ -9,7 +9,6 @@ import { CloudinaryOptions, FileResults } from '../index'
 import { BaseService } from '../base'
 
 @Service({
-  name: 'cloudinary',
   type: 'Files'
 })
 export class FileService extends BaseService implements Partial<ServiceMethods> {

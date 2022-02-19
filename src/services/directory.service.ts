@@ -7,7 +7,6 @@ import { CloudinaryOptions, FolderResults } from '../declarations'
 import { BaseService } from '../base'
 
 @Service({
-  name: 'cloudinary',
   type: 'Directories'
 })
 export class DirectoryService extends BaseService implements ServiceMethods<DirectoryEntity> {

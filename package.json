@@ -1,7 +1,7 @@
 {
-  "name": "filesrocket-cloudinary",
+  "name": "@filesrocket/cloudinary",
   "version": "0.1.0",
-  "description": "Node.js package that manages the files of the cloudinary service.",
+  "description": "Filesrocket service that manages the files and directories of the cloudinary service.",
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
