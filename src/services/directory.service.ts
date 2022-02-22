@@ -1,6 +1,12 @@
-import { DirectoryEntity, ResultEntity, Paginated, Query, ServiceMethods } from 'filesrocket'
-import { createHttpError } from 'filesrocket/lib/errors'
-import { Service } from 'filesrocket/lib/common'
+import {
+  DirectoryEntity,
+  ResultEntity,
+  Paginated,
+  Query,
+  ServiceMethods
+} from '@filesrocket/filesrocket'
+import { createHttpError } from '@filesrocket/filesrocket/lib/errors'
+import { Service } from '@filesrocket/filesrocket/lib/common'
 import cloudinary from 'cloudinary'
 
 import { CloudinaryOptions, FolderResults } from '../declarations'
@@ -61,7 +67,7 @@ export class DirectoryService extends BaseService implements ServiceMethods<Dire
     })
   }
 
-  async remove (id: string): Promise<Partial<ResultEntity>> {
+  async remove (id: string): Promise<ResultEntity> {
     return new Promise((resolve, reject) => {
       const callback = (err: any, result: any) => {
         if (err || !result) {

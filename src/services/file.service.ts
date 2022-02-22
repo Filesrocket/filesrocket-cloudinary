@@ -1,8 +1,14 @@
-import { ServiceMethods, Paginated, Query, FileEntity, ResultEntity } from 'filesrocket'
-import { Filename, Service } from 'filesrocket/lib/common'
+import {
+  ServiceMethods,
+  Paginated,
+  Query,
+  FileEntity,
+  ResultEntity
+} from '@filesrocket/filesrocket'
+import { Filename, Service } from '@filesrocket/filesrocket/lib/common'
+import { omitProps } from '@filesrocket/filesrocket/lib/utils'
+import { NotFound } from '@filesrocket/filesrocket/lib/errors'
 import cloudinary, { UploadApiResponse } from 'cloudinary'
-import { omitProps } from 'filesrocket/lib/utils'
-import { NotFound } from 'filesrocket/lib/errors'
 
 import { convertToExpression, CustomFilename } from '../utils'
 import { CloudinaryOptions, FileResults } from '../index'

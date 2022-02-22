@@ -1,4 +1,4 @@
-import { Query, ResultEntity } from 'filesrocket'
+import { Query, ResultEntity } from '@filesrocket/filesrocket'
 import { createReadStream } from 'fs'
 import { parse } from 'path'
 

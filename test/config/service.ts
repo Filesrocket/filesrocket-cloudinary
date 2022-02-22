@@ -1,5 +1,6 @@
-import { CloudinaryFileService, CloudinaryDirectoryService } from '../../src/index'
+import { CloudinaryService } from '../../src/index'
 import { environments } from './environments'
 
-export const fileService = new CloudinaryFileService(environments.cloudinary)
-export const directoryService = new CloudinaryDirectoryService(environments.cloudinary)
+const cloudinary = new CloudinaryService(environments.cloudinary)
+export const fileService = cloudinary.directory
+export const directoryService = cloudinary.directory

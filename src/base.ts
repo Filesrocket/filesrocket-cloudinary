@@ -1,5 +1,5 @@
 import { CloudinaryResults, FunctionBuilder } from './declarations'
-import { Paginated, ResultEntity } from 'filesrocket'
+import { Paginated, ResultEntity } from '@filesrocket/filesrocket'
 
 export class BaseService {
   protected pagination<T> (
