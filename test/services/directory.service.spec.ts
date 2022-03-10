@@ -1,8 +1,8 @@
-import { Paginated, ResultEntity } from '@filesrocket/filesrocket'
+import { Paginated, ResultEntity } from 'filesrocket'
 
 import { environments } from '../config/environments'
 import { directoryService } from '../config/service'
-jest.mock('@filesrocket/filesrocket')
+jest.mock('filesrocket')
 
 const FOLDER_NAMES: string[] = [
   'images',

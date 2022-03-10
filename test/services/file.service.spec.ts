@@ -1,4 +1,4 @@
-import { ResultEntity } from '@filesrocket/filesrocket'
+import { ResultEntity } from 'filesrocket'
 import { resolve } from 'path'
 
 import {
@@ -8,7 +8,7 @@ import {
   uploadFile,
   uploadManyFiles
 } from '../helpers/file.helper'
-jest.mock('@filesrocket/filesrocket')
+jest.mock('filesrocket')
 
 const FILENAMES: string[] = [
   'one.png',

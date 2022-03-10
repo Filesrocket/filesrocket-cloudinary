@@ -1,4 +1,4 @@
-import { DirectoryManager, FileManager } from '@filesrocket/filesrocket/lib'
+import { DirectoryManager, FileManager } from 'filesrocket'
 import { CloudinaryOptions } from './index'
 
 import { DirectoryService } from './services/directory.service'

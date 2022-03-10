@@ -4,10 +4,10 @@ import {
   Query,
   FileEntity,
   ResultEntity
-} from '@filesrocket/filesrocket'
-import { Filename, Service } from '@filesrocket/filesrocket/lib/common'
-import { omitProps } from '@filesrocket/filesrocket/lib/utils'
-import { NotFound } from '@filesrocket/filesrocket/lib/errors'
+} from 'filesrocket'
+import { Filename, Service } from 'filesrocket/lib/common'
+import { omitProps } from 'filesrocket/lib/utils'
+import { NotFound } from 'filesrocket/lib/errors'
 import cloudinary, { UploadApiResponse } from 'cloudinary'
 
 import { convertToExpression, CustomFilename } from '../utils'

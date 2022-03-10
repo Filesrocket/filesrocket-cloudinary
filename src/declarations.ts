@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Pagination, Query, ResultEntity } from '@filesrocket/filesrocket'
+import { Pagination, Query, ResultEntity } from 'filesrocket'
 import { ConfigOptions, UploadApiResponse } from 'cloudinary'
 
 export interface CloudinaryOptions extends ConfigOptions {

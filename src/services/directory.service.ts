@@ -4,9 +4,9 @@ import {
   Paginated,
   Query,
   ServiceMethods
-} from '@filesrocket/filesrocket'
-import { createHttpError } from '@filesrocket/filesrocket/lib/errors'
-import { Service } from '@filesrocket/filesrocket/lib/common'
+} from 'filesrocket'
+import { createHttpError } from 'filesrocket/lib/errors'
+import { Service } from 'filesrocket/lib/common'
 import cloudinary from 'cloudinary'
 
 import { CloudinaryOptions, FolderResults } from '../declarations'

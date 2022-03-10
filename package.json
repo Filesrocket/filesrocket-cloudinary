@@ -1,5 +1,5 @@
 {
-  "name": "@filesrocket/cloudinary",
+  "name": "filesrocket-cloudinary",
   "version": "0.1.0",
   "description": "Filesrocket service that manages the files and directories of the cloudinary service.",
   "main": "lib/index.js",
@@ -13,7 +13,9 @@
   },
   "keywords": [
     "cloudinary",
-    "filesmanagement"
+    "filesmanagement",
+    "uploads",
+    "files"
   ],
   "author": {
     "name": "Ivan Zaldivar",
