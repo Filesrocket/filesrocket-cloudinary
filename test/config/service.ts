@@ -1,8 +1,12 @@
-import { CloudinaryService } from '../../src/index'
-import { environments } from './environments'
+import dotenv from 'dotenv'
 
-const cloudinary = new CloudinaryService(environments.cloudinary)
+import { CloudinaryFileService } from '../../src/index'
 
-export const fileService = cloudinary.directory
+dotenv.config()
 
-export const directoryService = cloudinary.directory
+export default new CloudinaryFileService({
+  pagination: { default: 15, max: 50 },
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+})

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Pagination, Query, ResultEntity } from 'filesrocket'
+import { Pagination, Query, OutputEntity } from 'filesrocket'
 import { ConfigOptions, UploadApiResponse } from 'cloudinary'
 
 export interface CloudinaryOptions extends ConfigOptions {
@@ -24,4 +24,4 @@ export interface CloudinaryResults<T> extends Query {
   next_cursor: string;
 }
 
-export type FunctionBuilder<T> = (data: T) => Partial<ResultEntity>;
+export type FunctionBuilder<T> = (data: T) => Partial<OutputEntity>;

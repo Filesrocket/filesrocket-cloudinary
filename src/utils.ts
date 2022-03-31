@@ -1,5 +1,5 @@
-import { parse } from 'path'
 import { exts } from './dump'
+import { parse } from 'path'
 
 export function convertToExpression<T> (payload: T, join: string) {
   const keys: string[] = Object.keys(payload)
@@ -15,15 +15,26 @@ export function convertToExpression<T> (payload: T, join: string) {
       items.push(value)
       return
     }
+
     items.push(`${key}=${value}`)
   })
 
   return items.join(join)
 }
 
+function formatFilename (filename: string): string {
+  const items = exts.map(item => ({ [item]: item }))
+  const dictionary: Record<string, string> = Object.assign({}, ...items)
+
+  const { name, ext } = parse(filename)
+  if (dictionary[ext]) filename = name
+
+  return filename
+}
+
 /**
  * Generate a random filename with or without an
- * extension depending on the file type.
+ * extension depending on the file type
  *
  * **Example**
  * - history.pptx -> history-186dgs.pptx
@@ -33,14 +44,18 @@ export function convertToExpression<T> (payload: T, join: string) {
  *
  * For more information visit: https://cloudinary.com/documentation/image_upload_api_reference#upload_optional_parameters
  */
-export function CustomFilename (filename: string): string {
-  const dictionary: Record<string, string> = Object.assign(
-    {},
-    ...exts.map(item => ({ [item]: item }))
-  )
+export function CustomFilename (
+  target: Object,
+  key: string | symbol,
+  descriptor: PropertyDescriptor
+) {
+  const original = descriptor.value
 
-  const { name, ext } = parse(filename)
-  if (dictionary[ext]) filename = name
+  descriptor.value = function (...args: any[]) {
+    const data = args[0]
 
-  return filename
+    data.name = formatFilename(data.name)
+
+    original.apply(this, args)
+  }
 }

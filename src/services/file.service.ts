@@ -2,10 +2,9 @@ import {
   ServiceMethods,
   Paginated,
   Query,
-  FileEntity,
-  ResultEntity
+  InputFile,
+  OutputEntity
 } from 'filesrocket'
-import { Filename, Service } from 'filesrocket/lib/common'
 import { omitProps } from 'filesrocket/lib/utils'
 import { NotFound } from 'filesrocket/lib/errors'
 import cloudinary, { UploadApiResponse } from 'cloudinary'
@@ -14,17 +13,14 @@ import { convertToExpression, CustomFilename } from '../utils'
 import { CloudinaryOptions, FileResults } from '../index'
 import { BaseService } from '../base'
 
-@Service({
-  type: 'Files'
-})
 export class FileService extends BaseService implements Partial<ServiceMethods> {
   constructor (private readonly options: CloudinaryOptions) {
     super()
     cloudinary.v2.config(options)
   }
 
-  @Filename({ strategy: CustomFilename })
-  async create (data: FileEntity, query: Query = {}): Promise<ResultEntity> {
+  @CustomFilename
+  async create (data: InputFile, query: Query = {}): Promise<OutputEntity> {
     return new Promise((resolve, reject) => {
       const callback = (err: any, result: UploadApiResponse | undefined) => {
         !result || err ? reject(err) : resolve(this.builder(result))
@@ -44,7 +40,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     })
   }
 
-  async list (query: Query = {}): Promise<Paginated<ResultEntity>> {
+  async list (query: Query = {}): Promise<Paginated<OutputEntity>> {
     const { pagination } = this.options
     const paginate: number = query.size <= pagination.max
       ? query.size
@@ -65,7 +61,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     return this.pagination(data, this.builder) as any
   }
 
-  async get (id: string, query: Query = {}): Promise<ResultEntity> {
+  async get (id: string, query: Query = {}): Promise<OutputEntity> {
     const partialQuery = omitProps(query, ['path'])
     const exp: string = convertToExpression({
       ...partialQuery,
@@ -84,7 +80,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     return this.builder(data.resources[0])
   }
 
-  async remove (path: string, query: Query = {}): Promise<ResultEntity> {
+  async remove (path: string, query: Query = {}): Promise<OutputEntity> {
     const file = await this.get(path, {})
 
     const partialQuery = omitProps(query, ['path'])
@@ -98,7 +94,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     return file
   }
 
-  private builder (payload: UploadApiResponse): ResultEntity {
+  private builder (payload: UploadApiResponse): OutputEntity {
     return {
       ...payload,
       id: payload.public_id,

@@ -1,11 +1,11 @@
 import { CloudinaryResults, FunctionBuilder } from './declarations'
-import { Paginated, ResultEntity } from 'filesrocket'
+import { Paginated, OutputEntity } from 'filesrocket'
 
 export class BaseService {
   protected pagination<T> (
     data: CloudinaryResults<T>,
     func: FunctionBuilder<T>
-  ): Paginated<Partial<ResultEntity>> {
+  ): Paginated<Partial<OutputEntity>> {
     return {
       items: data.resources.map(func),
       nextPageToken: data.next_cursor,

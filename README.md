@@ -1,23 +1,26 @@
-# filesrocket-clodinary
-[Filesrocket](https://github.com/IvanZM123/filesrocket) service to manage your files and directories with [cloudinary](https://cloudinary.com/) services.
+# filesrocket-cloudinary
+
+[Filesrocket](https://github.com/IvanZM123/filesrocket) service to manage your files with [Cloudinary](https://cloudinary.com/) services
 
 ## Install
+
 ```
 npm i filesrocket-cloudinary
 ```
 
 ## Usage
-To use the service add the following content.
+
+To use the service add the following content
 
 ```ts
 import { Filesrocket } from "filesrocket";
-import { CloudinaryService } from "filesrocket-cloudinary";
+import { CloudinaryFileService } from "filesrocket-cloudinary";
 
 // Initialize filesrocket
 const filesrocket = new Filesrocket();
 
 // Setting service
-const cloudinary = new CloudinaryService({
+const cloudinary = new CloudinaryFileService({
   pagination: { default: 15, max: 50 },
   cloud_name: "<Your CLOUD NAME>",
   api_key: "<Your API KEY>",
@@ -25,19 +28,13 @@ const cloudinary = new CloudinaryService({
 });
 
 // Register services
-filesrocket.register("cloudinaryFile", cloudinary.file);
-
-filesrocket.register("cloudinaryDirectory", cloudinary.directory);
+filesrocket.register("cloudinary", cloudinary);
 
 // Recovering service
-const fileService = filesrocket.service("cloudinaryFile");
-
-const directoryService = filesrocket.service("cloudinaryDirectory");
+const service = filesrocket.service("cloudinary");
 
 // Recovering controller
-const fileController = filesrocket.controller("cloudinaryFile");
-
-const directoryController = filesrocket.controller("cloudinaryDirectory");
+const controller = filesrocket.controller("cloudinary");
 ```
 
-> **Note**: To use this service, you need to have an account, enter [here](https://cloudinary.com/documentation/how_to_integrate_cloudinary) and follow the steps.
+> **Note**: To use this service, you need to have an account, enter [here](https://cloudinary.com/documentation/how_to_integrate_cloudinary#1_create_and_set_up_your_account) and follow the steps.

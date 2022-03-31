@@ -1,11 +1,11 @@
 {
   "name": "filesrocket-cloudinary",
   "version": "0.1.0",
-  "description": "Filesrocket service that manages the files and directories of the cloudinary service.",
+  "description": "Filesrocket service that manage the files of the Cloudinary Service",
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "npm run test && npm lint && tsc -p .",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --fix . --ext .ts",
     "test": "jest",
@@ -19,11 +19,10 @@
   ],
   "author": {
     "name": "Ivan Zaldivar",
-    "email": "ivanzaldivar16@gmail.com",
     "url": "https://github.com/IvanZM123"
   },
   "repository": {
-    "url": "https://github.com/IvanZM123/filesrocket-cloudinary"
+    "url": "https://github.com/Filesrocket/filesrocket-cloudinary"
   },
   "license": "MIT",
   "dependencies": {
