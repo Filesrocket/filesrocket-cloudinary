@@ -24,6 +24,9 @@
   "repository": {
     "url": "https://github.com/Filesrocket/filesrocket-cloudinary"
   },
+  "bugs": {
+    "url": "https://github.com/Filesrocket/filesrocket-cloudinary/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "cloudinary": "1.27.1"
