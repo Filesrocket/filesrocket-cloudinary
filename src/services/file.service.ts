@@ -21,22 +21,27 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
 
   @CustomFilename
   async create (data: InputEntity, query: Query = {}): Promise<OutputEntity> {
+    const partialQuery = omitProps(query, ['path'])
+
+    const props = {
+      resource_type: 'auto',
+      ...partialQuery,
+      folder: query.path,
+      public_id: data.name
+    }
+
     return new Promise((resolve, reject) => {
-      const callback = (err: any, result: UploadApiResponse | undefined) => {
-        !result || err ? reject(err) : resolve(this.builder(result))
-      }
+      const writable = cloudinary.v2.uploader.upload_stream(props, (err, result) => {
+        if (err) return reject(err)
 
-      const partialQuery = omitProps(query, ['path'])
-      const props = {
-        resource_type: 'auto',
-        ...partialQuery,
-        folder: query.path,
-        public_id: data.name
-      }
+        const entity = this.builder(result as any)
 
-      const uploader = cloudinary.v2.uploader.upload_stream(props, callback)
+        return resolve(entity)
+      })
 
-      data.stream.pipe(uploader)
+      writable.on('error', (err) => reject(err))
+
+      data.stream.pipe(writable)
     })
   }
 
@@ -63,6 +68,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
 
   async get (id: string, query: Query = {}): Promise<OutputEntity> {
     const partialQuery = omitProps(query, ['path'])
+
     const exp: string = convertToExpression({
       ...partialQuery,
       folder: query.path,
@@ -74,7 +80,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
       .execute()
 
     if (!data.resources.length) {
-      throw new NotFound('The file does not exist.')
+      throw new NotFound('File does not exist')
     }
 
     return this.builder(data.resources[0])
@@ -84,6 +90,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     const file = await this.get(path, {})
 
     const partialQuery = omitProps(query, ['path'])
+
     const params = {
       resource_type: file.resource_type,
       ...partialQuery,
@@ -91,6 +98,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     }
 
     await cloudinary.v2.api.delete_resources([path], params)
+
     return file
   }
 

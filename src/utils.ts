@@ -56,6 +56,6 @@ export function CustomFilename (
 
     data.name = formatFilename(data.name)
 
-    original.apply(this, args)
+    return original.apply(this, args)
   }
 }
