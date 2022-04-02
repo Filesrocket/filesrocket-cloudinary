@@ -1,6 +1,6 @@
 {
   "name": "filesrocket-cloudinary",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Filesrocket service that manage the files of the Cloudinary Service",
   "main": "lib/index.js",
   "types": "lib",

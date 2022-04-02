@@ -2,7 +2,7 @@ import {
   ServiceMethods,
   Paginated,
   Query,
-  InputFile,
+  InputEntity,
   OutputEntity
 } from 'filesrocket'
 import { omitProps } from 'filesrocket/lib/utils'
@@ -20,7 +20,7 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
   }
 
   @CustomFilename
-  async create (data: InputFile, query: Query = {}): Promise<OutputEntity> {
+  async create (data: InputEntity, query: Query = {}): Promise<OutputEntity> {
     return new Promise((resolve, reject) => {
       const callback = (err: any, result: UploadApiResponse | undefined) => {
         !result || err ? reject(err) : resolve(this.builder(result))
