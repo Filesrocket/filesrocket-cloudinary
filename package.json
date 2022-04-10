@@ -1,6 +1,6 @@
 {
   "name": "filesrocket-cloudinary",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Filesrocket service that manage the files of the Cloudinary Service",
   "main": "lib/index.js",
   "types": "lib",
@@ -38,7 +38,7 @@
   "license": "MIT",
   "dependencies": {
     "cloudinary": "^1.29.0",
-    "filesrocket": "^0.0.3"
+    "filesrocket": "^0.0.6"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

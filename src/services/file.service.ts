@@ -1,9 +1,9 @@
 import {
   ServiceMethods,
-  Paginated,
-  Query,
+  OutputEntity,
   InputEntity,
-  OutputEntity
+  Paginated,
+  Query
 } from 'filesrocket'
 import { omitProps } from 'filesrocket/lib/utils'
 import { NotFound } from 'filesrocket/lib/errors'

@@ -1,6 +1,8 @@
 # filesrocket-cloudinary
 
-[Filesrocket](https://github.com/IvanZM123/filesrocket) service to manage your files with [Cloudinary](https://cloudinary.com/) services
+[![npm version](https://badge.fury.io/js/filesrocket-cloudinary.svg)](https://badge.fury.io/js/filesrocket-cloudinary) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+[**Filesrocket**](https://github.com/IvanZM123/filesrocket) service to manage your files with [**Cloudinary**](https://cloudinary.com/)
 
 ## Install
 
