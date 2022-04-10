@@ -7,7 +7,7 @@ import {
 } from 'filesrocket'
 import { omitProps } from 'filesrocket/lib/utils'
 import { NotFound } from 'filesrocket/lib/errors'
-import cloudinary, { UploadApiResponse } from 'cloudinary'
+import cloudinary from 'cloudinary'
 
 import { convertToExpression, CustomFilename } from '../utils'
 import { CloudinaryOptions, FileResults } from '../index'
@@ -31,13 +31,15 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     }
 
     return new Promise((resolve, reject) => {
-      const writable = cloudinary.v2.uploader.upload_stream(props, (err, result) => {
-        if (err) return reject(err)
+      const writable = cloudinary.v2
+        .uploader
+        .upload_stream(props, (err, result) => {
+          if (err) return reject(err)
 
-        const entity = this.builder(result as any)
+          const entity = this.builder(result as any)
 
-        return resolve(entity)
-      })
+          return resolve(entity)
+        })
 
       writable.on('error', (err) => reject(err))
 
@@ -67,6 +69,8 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
   }
 
   async get (id: string, query: Query = {}): Promise<OutputEntity> {
+    if (!id) throw new NotFound('Id is empty')
+
     const partialQuery = omitProps(query, ['path'])
 
     const exp: string = convertToExpression({
@@ -100,19 +104,5 @@ export class FileService extends BaseService implements Partial<ServiceMethods> 
     await cloudinary.v2.api.delete_resources([path], params)
 
     return file
-  }
-
-  private builder (payload: UploadApiResponse): OutputEntity {
-    return {
-      ...payload,
-      id: payload.public_id,
-      name: payload.filename || payload.public_id,
-      size: payload.bytes,
-      dir: payload.folder || '',
-      ext: `.${payload.format}`,
-      url: payload.secure_url,
-      createdAt: new Date(payload.created_at),
-      updatedAt: new Date(payload.updatedAt)
-    }
   }
 }
